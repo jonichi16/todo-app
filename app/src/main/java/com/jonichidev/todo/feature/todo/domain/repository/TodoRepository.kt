@@ -10,6 +10,11 @@ interface TodoRepository {
 
     suspend fun deleteTodo(todo: Todo)
 
+    suspend fun completeTodo(
+        id: Int,
+        isCompleted: Boolean,
+    )
+
     fun getTodoById(id: Int): Flow<Todo>
 
     fun getTodos(): Flow<List<Todo>>

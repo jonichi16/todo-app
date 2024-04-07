@@ -2,17 +2,6 @@
 <issues format="6" by="lint 8.3.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.3.1)" variant="all" version="8.3.1">
 
     <issue
-        id="RedundantLabel"
-        message="Redundant label can be removed"
-        errorLine1="            android:label=&quot;@string/app_name&quot;"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/AndroidManifest.xml"
-            line="18"
-            column="13"/>
-    </issue>
-
-    <issue
         id="GradleDependency"
         message="A newer version of org.jetbrains.kotlin.android than 1.9.0 is available: 1.9.22"
         errorLine1="kotlin = &quot;1.9.0&quot;"
@@ -43,39 +32,6 @@
             file="$HOME/projects/Todo/gradle/libs.versions.toml"
             line="3"
             column="10"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.compose:compose-bom than 2023.08.00 is available: 2024.04.00"
-        errorLine1="composeBom = &quot;2023.08.00&quot;"
-        errorLine2="             ~~~~~~~~~~~~">
-        <location
-            file="$HOME/projects/Todo/gradle/libs.versions.toml"
-            line="10"
-            column="14"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.compose:compose-bom than 2023.08.00 is available: 2024.04.00"
-        errorLine1="composeBom = &quot;2023.08.00&quot;"
-        errorLine2="             ~~~~~~~~~~~~">
-        <location
-            file="$HOME/projects/Todo/gradle/libs.versions.toml"
-            line="10"
-            column="14"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of androidx.compose:compose-bom than 2023.08.00 is available: 2024.04.00"
-        errorLine1="composeBom = &quot;2023.08.00&quot;"
-        errorLine2="             ~~~~~~~~~~~~">
-        <location
-            file="$HOME/projects/Todo/gradle/libs.versions.toml"
-            line="10"
-            column="14"/>
     </issue>
 
     <issue

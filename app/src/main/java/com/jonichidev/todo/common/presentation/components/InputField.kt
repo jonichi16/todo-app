@@ -1,4 +1,4 @@
-package com.jonichidev.todo.common.presentation
+package com.jonichidev.todo.common.presentation.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

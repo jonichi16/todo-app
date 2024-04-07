@@ -30,6 +30,13 @@ class TodoRepositoryImpl
             dao.delete(todo.toTodoEntity())
         }
 
+        override suspend fun completeTodo(
+            id: Int,
+            isCompleted: Boolean,
+        ) {
+            dao.updateCompleted(id, isCompleted)
+        }
+
         override fun getTodoById(id: Int): Flow<Todo> {
             return dao.getById(id).map {
                 it.toTodo()

@@ -1,20 +1,20 @@
 package com.jonichidev.todo.feature.todo.presentation.todolist
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -32,11 +32,12 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jonichidev.todo.R
-import com.jonichidev.todo.common.presentation.TodoTopAppBar
+import com.jonichidev.todo.common.presentation.components.TodoTopAppBar
 import com.jonichidev.todo.common.presentation.ui.theme.TodoTheme
 import com.jonichidev.todo.feature.todo.domain.model.Todo
 import com.jonichidev.todo.feature.todo.presentation.navigation.TodoNavDestination
@@ -87,10 +88,11 @@ fun TodoListScreen(
             TodoListBody(
                 todos = uiState.todos,
                 onItemClick = navigateToTodoUpdate,
+                onCompleted = viewModel::completeTask,
                 modifier =
-                Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize(),
+                    Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize(),
             )
         }
     }
@@ -101,6 +103,7 @@ fun TodoListBody(
     todos: List<Todo>,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    onCompleted: (Int, Boolean) -> Unit = { _, _ -> Unit },
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         if (todos.isEmpty()) {
@@ -117,16 +120,17 @@ fun TodoListBody(
         } else {
             LazyColumn(
                 modifier =
-                Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
+                    Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
             ) {
                 items(items = todos, key = { it.id }) { item ->
                     Row {
                         TodoItem(
                             todo = item,
+                            onCompleted = onCompleted,
                             modifier =
-                            Modifier
-                                .padding(dimensionResource(id = R.dimen.padding_small))
-                                .clickable { onItemClick(item.id) },
+                                Modifier
+                                    .padding(dimensionResource(id = R.dimen.padding_small))
+                                    .clickable { onItemClick(item.id) },
                         )
                     }
                 }
@@ -139,18 +143,43 @@ fun TodoListBody(
 fun TodoItem(
     todo: Todo,
     modifier: Modifier = Modifier,
+    onCompleted: (Int, Boolean) -> Unit = { _, _ -> Unit },
 ) {
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
-        Row(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small)),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier =
+                Modifier
+                    .padding(
+                        bottom = dimensionResource(id = R.dimen.padding_small),
+                        end = dimensionResource(id = R.dimen.padding_small),
+                    ),
         ) {
-            Checkbox(checked = false, onCheckedChange = { !it })
-            Spacer(modifier = Modifier.weight(1f))
-            Text(text = todo.title)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Checkbox(
+                    checked = todo.isCompleted,
+                    onCheckedChange = { checked ->
+                        onCompleted(todo.id, checked)
+                    },
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = todo.title,
+                    textDecoration = if (todo.isCompleted) TextDecoration.LineThrough else null,
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Spacer(modifier = Modifier.width(50.dp))
+                Text(text = todo.description, modifier = Modifier.weight(1f))
+            }
         }
     }
 }
@@ -161,11 +190,11 @@ fun TodoListBodyPreview() {
     TodoTheme {
         TodoListBody(
             todos =
-            listOf(
-                Todo("Todo 1", 1),
-                Todo("Todo 2", 2),
-                Todo("Todo 3", 3),
-            ),
+                listOf(
+                    Todo("Todo 1", "Description 1", false, 1),
+                    Todo("Todo 2", "Description 2", false, 2),
+                    Todo("Todo 3", "Description 3", true, 3),
+                ),
             onItemClick = {},
         )
     }
@@ -175,6 +204,6 @@ fun TodoListBodyPreview() {
 @Composable
 fun TodoItemPreview() {
     TodoTheme {
-        TodoItem(todo = Todo("Sample Todo", 1))
+        TodoItem(todo = Todo("Sample Todo", "Description 1", false, 1))
     }
 }

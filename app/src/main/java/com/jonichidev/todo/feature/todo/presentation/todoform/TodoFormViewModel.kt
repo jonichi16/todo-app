@@ -13,6 +13,8 @@ import javax.inject.Inject
 
 data class TodoFormState(
     val title: String = "",
+    val description: String = "",
+    val isCompleted: Boolean = false,
     val isLoading: Boolean = false,
     val isFormValid: Boolean = false,
 )
@@ -32,10 +34,21 @@ class TodoFormViewModel
             }
         }
 
+        fun updateDescription(newDescription: String) {
+            _uiState.update {
+                it.copy(description = newDescription, isFormValid = validateForm(_uiState.value))
+            }
+        }
+
         fun createTodo() =
             viewModelScope.launch {
                 if (validateForm(_uiState.value)) {
-                    val newTodo = Todo(_uiState.value.title)
+                    val newTodo =
+                        Todo(
+                            _uiState.value.title,
+                            _uiState.value.description,
+                            _uiState.value.isCompleted,
+                        )
                     repository.createTodo(newTodo)
                 }
             }

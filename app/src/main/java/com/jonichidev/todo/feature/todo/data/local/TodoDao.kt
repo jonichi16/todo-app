@@ -14,6 +14,12 @@ interface TodoDao {
     @Delete
     suspend fun delete(todoEntity: TodoEntity)
 
+    @Query("UPDATE todo SET isCompleted = :isCompleted WHERE id = :id")
+    suspend fun updateCompleted(
+        id: Int,
+        isCompleted: Boolean,
+    )
+
     @Query("SELECT * FROM todo WHERE id = :id")
     fun getById(id: Int): Flow<TodoEntity>
 
