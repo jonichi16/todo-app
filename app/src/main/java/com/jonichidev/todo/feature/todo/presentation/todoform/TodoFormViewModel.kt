@@ -11,6 +11,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class TodoFormState(
+    val title: String = "",
+    val isLoading: Boolean = false,
+    val isFormValid: Boolean = false,
+)
+
 @HiltViewModel
 class TodoFormViewModel
     @Inject

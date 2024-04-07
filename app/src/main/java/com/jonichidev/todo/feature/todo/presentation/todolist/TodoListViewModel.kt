@@ -3,6 +3,7 @@ package com.jonichidev.todo.feature.todo.presentation.todolist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jonichidev.todo.common.util.Conclusion
+import com.jonichidev.todo.feature.todo.domain.model.Todo
 import com.jonichidev.todo.feature.todo.domain.repository.TodoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,6 +12,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
+
+data class TodoListState(
+    val todos: List<Todo> = emptyList(),
+    val isLoading: Boolean = false,
+)
 
 @HiltViewModel
 class TodoListViewModel
