@@ -1,4 +1,4 @@
-package com.jonichidev.todo.common.presentation
+package com.jonichidev.todo.common.presentation.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -18,7 +18,7 @@ fun TodoTopAppBar(
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = title) },
@@ -28,10 +28,10 @@ fun TodoTopAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
             }
-        }
+        },
     )
 }

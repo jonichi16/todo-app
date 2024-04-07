@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class TodoListState(
@@ -40,4 +41,15 @@ class TodoListViewModel
                     started = SharingStarted.WhileSubscribed(5_000L),
                     initialValue = TodoListState(isLoading = true),
                 )
+
+        fun completeTask(
+            id: Int,
+            isCompleted: Boolean,
+        ) = viewModelScope.launch {
+            if (isCompleted) {
+                repository.completeTodo(id, isCompleted = true)
+            } else {
+                repository.completeTodo(id, isCompleted = false)
+            }
+        }
     }
