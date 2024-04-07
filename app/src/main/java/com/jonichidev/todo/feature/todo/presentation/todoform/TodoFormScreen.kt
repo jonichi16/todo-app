@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -22,6 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jonichidev.todo.R
+import com.jonichidev.todo.common.presentation.InputField
+import com.jonichidev.todo.common.presentation.TodoButton
+import com.jonichidev.todo.common.presentation.TodoTopAppBar
 import com.jonichidev.todo.feature.todo.presentation.navigation.TodoNavDestination
 import kotlinx.coroutines.launch
 
@@ -30,6 +34,7 @@ object TodoFormDestination : TodoNavDestination {
     override val titleRes = R.string.app_name
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoFormScreen(
     navigateBack: () -> Unit,
@@ -41,12 +46,15 @@ fun TodoFormScreen(
 
     Scaffold(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_small)),
+        topBar = {
+            TodoTopAppBar(title = "Add Todo", canNavigateBack = true, navigateUp = navigateBack)
+        }
     ) { innerPadding ->
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
+            Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
         ) {
             InputField(
                 label = "Title",
@@ -54,6 +62,7 @@ fun TodoFormScreen(
                 onValueChange = viewModel::updateTitle,
                 modifier = Modifier,
             )
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
             TodoButton(
                 text = stringResource(id = R.string.add_todo_title),
                 enabled = uiState.isFormValid,
@@ -63,48 +72,8 @@ fun TodoFormScreen(
                         navigateBack()
                     }
                 },
+                modifier = Modifier.fillMaxWidth()
             )
         }
-    }
-}
-
-@Composable
-fun InputField(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
-    Column(
-        modifier = modifier,
-    ) {
-        Text(text = label, style = MaterialTheme.typography.titleMedium)
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            placeholder = { Text(text = "Enter $label") },
-            colors = OutlinedTextFieldDefaults.colors(),
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true,
-        )
-    }
-}
-
-@Composable
-fun TodoButton(
-    text: String,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    onClick: () -> Unit = {},
-) {
-    Button(
-        onClick = { onClick() },
-        enabled = enabled,
-        modifier = modifier,
-    ) {
-        Text(text = text)
     }
 }

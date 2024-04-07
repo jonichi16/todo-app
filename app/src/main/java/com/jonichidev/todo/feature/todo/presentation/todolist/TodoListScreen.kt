@@ -1,6 +1,7 @@
 package com.jonichidev.todo.feature.todo.presentation.todolist
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -34,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jonichidev.todo.R
+import com.jonichidev.todo.common.presentation.TodoTopAppBar
 import com.jonichidev.todo.common.presentation.ui.theme.TodoTheme
 import com.jonichidev.todo.feature.todo.domain.model.Todo
 import com.jonichidev.todo.feature.todo.presentation.navigation.TodoNavDestination
@@ -58,11 +61,7 @@ fun TodoListScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text(stringResource(id = R.string.app_name)) },
-                modifier = modifier,
-                scrollBehavior = scrollBehavior,
-            )
+            TodoTopAppBar(title = "Todo", canNavigateBack = false, scrollBehavior = scrollBehavior)
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { navigateToAddTodo() }) {
@@ -89,9 +88,9 @@ fun TodoListScreen(
                 todos = uiState.todos,
                 onItemClick = navigateToTodoUpdate,
                 modifier =
-                    Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize(),
+                Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
             )
         }
     }
@@ -118,16 +117,16 @@ fun TodoListBody(
         } else {
             LazyColumn(
                 modifier =
-                    Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
+                Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
             ) {
                 items(items = todos, key = { it.id }) { item ->
                     Row {
                         TodoItem(
                             todo = item,
                             modifier =
-                                Modifier
-                                    .padding(dimensionResource(id = R.dimen.padding_small))
-                                    .clickable { onItemClick(item.id) },
+                            Modifier
+                                .padding(dimensionResource(id = R.dimen.padding_small))
+                                .clickable { onItemClick(item.id) },
                         )
                     }
                 }
@@ -147,8 +146,9 @@ fun TodoItem(
     ) {
         Row(
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small)),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = todo.id.toString())
+            Checkbox(checked = false, onCheckedChange = { !it })
             Spacer(modifier = Modifier.weight(1f))
             Text(text = todo.title)
         }
@@ -161,11 +161,11 @@ fun TodoListBodyPreview() {
     TodoTheme {
         TodoListBody(
             todos =
-                listOf(
-                    Todo("Todo 1", 1),
-                    Todo("Todo 2", 2),
-                    Todo("Todo 3", 3),
-                ),
+            listOf(
+                Todo("Todo 1", 1),
+                Todo("Todo 2", 2),
+                Todo("Todo 3", 3),
+            ),
             onItemClick = {},
         )
     }
