@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TodoDao {
-
     @Upsert
     suspend fun upsert(todoEntity: TodoEntity)
 
