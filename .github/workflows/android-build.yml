@@ -149,7 +149,7 @@ jobs:
                 "type": "rich",
                 "title": "PR #${{ github.event.number }} on ${{ github.event.repository.name }} passed code check!",
                 "description": "#${{ github.event.number }}: ${{ github.event.pull_request.title }}\n\n${{ github.event.repository.name }}: ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}",
-                "color": 16737843,
+                "color": 16711680,
                 "author": {
                   "name": "${{ github.event.pull_request.user.login }}",
                   "url": "${{ github.event.pull_request.user.html_url }}",
@@ -164,7 +164,7 @@ jobs:
                   },
                   {
                     "name": "Status",
-                    "value": "SUCCESS",
+                    "value": "FAILURE",
                     "inline": "true"
                   },
                   {
