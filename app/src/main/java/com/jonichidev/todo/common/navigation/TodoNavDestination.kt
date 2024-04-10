@@ -1,4 +1,4 @@
-package com.jonichidev.todo.feature.todo.presentation.navigation
+package com.jonichidev.todo.common.navigation
 
 interface TodoNavDestination {
     val route: String

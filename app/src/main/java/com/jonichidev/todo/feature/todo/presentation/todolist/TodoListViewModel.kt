@@ -2,7 +2,7 @@ package com.jonichidev.todo.feature.todo.presentation.todolist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jonichidev.todo.common.util.Conclusion
+import com.jonichidev.todo.common.util.Result
 import com.jonichidev.todo.feature.todo.domain.model.Todo
 import com.jonichidev.todo.feature.todo.domain.repository.TodoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +28,7 @@ class TodoListViewModel
         private val _isLoading = MutableStateFlow(false)
         private val _todos =
             repository.getTodos()
-                .map { Conclusion.Success(it) }
+                .map { Result.Success(it) }
         val uiState =
             combine(_todos, _isLoading) { todos, isLoading ->
                 TodoListState(

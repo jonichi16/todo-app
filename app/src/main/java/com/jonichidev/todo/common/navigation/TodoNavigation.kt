@@ -1,29 +1,40 @@
-package com.jonichidev.todo.feature.todo.presentation.navigation
+package com.jonichidev.todo.common.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.jonichidev.todo.feature.todo.presentation.todoform.TodoFormDestination
+import androidx.navigation.compose.rememberNavController
+import com.jonichidev.todo.R
 import com.jonichidev.todo.feature.todo.presentation.todoform.TodoFormScreen
-import com.jonichidev.todo.feature.todo.presentation.todolist.TodoListDestination
 import com.jonichidev.todo.feature.todo.presentation.todolist.TodoListScreen
+
+
+object TodoListDestination : TodoNavDestination {
+    override val route = "todoList"
+    override val titleRes = R.string.app_name
+}
+
+object TodoFormDestination : TodoNavDestination {
+    override val route = "todoForm"
+    override val titleRes = R.string.app_name
+}
 
 @Composable
 fun TodoNavHost(
-    navController: NavHostController,
     modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    startDestination: String = TodoListDestination.route
 ) {
     NavHost(
         navController = navController,
-        startDestination = TodoListDestination.route,
+        startDestination = startDestination,
         modifier = modifier,
     ) {
         composable(route = TodoListDestination.route) {
             TodoListScreen(
-                navigateToAddTodo = { navController.navigate(TodoFormDestination.route) },
-                navigateToTodoUpdate = {},
+                onNavigateToTodoForm = { navController.navigate(TodoFormDestination.route) },
             )
         }
         composable(route = TodoFormDestination.route) {
