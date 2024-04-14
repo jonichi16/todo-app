@@ -147,7 +147,7 @@ jobs:
             "embeds": [
               {
                 "type": "rich",
-                "title": "PR #${{ github.event.number }} on ${{ github.event.repository.name }} passed code check!",
+                "title": "PR #${{ github.event.number }} on ${{ github.event.repository.name }} hit a snag!",
                 "description": "#${{ github.event.number }}: ${{ github.event.pull_request.title }}\n\n${{ github.event.repository.name }}: ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}",
                 "color": 13369344,
                 "author": {

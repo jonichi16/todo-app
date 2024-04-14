@@ -33,5 +33,6 @@ fun TodoTopAppBar(
                 }
             }
         },
+        modifier = modifier
     )
 }

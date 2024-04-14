@@ -20,13 +20,7 @@ import com.jonichidev.todo.R
 import com.jonichidev.todo.common.presentation.components.InputField
 import com.jonichidev.todo.common.presentation.components.TodoButton
 import com.jonichidev.todo.common.presentation.components.TodoTopAppBar
-import com.jonichidev.todo.feature.todo.presentation.navigation.TodoNavDestination
 import kotlinx.coroutines.launch
-
-object TodoFormDestination : TodoNavDestination {
-    override val route = "TODO_FORM"
-    override val titleRes = R.string.app_name
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,9 +40,9 @@ fun TodoFormScreen(
     ) { innerPadding ->
         Column(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
+            Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
         ) {
             InputField(
                 label = "Title",

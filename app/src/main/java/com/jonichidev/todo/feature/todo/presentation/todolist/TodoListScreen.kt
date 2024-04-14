@@ -19,6 +19,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,23 +41,15 @@ import com.jonichidev.todo.R
 import com.jonichidev.todo.common.presentation.components.TodoTopAppBar
 import com.jonichidev.todo.common.presentation.ui.theme.TodoTheme
 import com.jonichidev.todo.feature.todo.domain.model.Todo
-import com.jonichidev.todo.feature.todo.presentation.navigation.TodoNavDestination
-
-object TodoListDestination : TodoNavDestination {
-    override val route = "TODO_LIST"
-    override val titleRes = R.string.app_name
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoListScreen(
-    navigateToAddTodo: () -> Unit,
-    navigateToTodoUpdate: (Int) -> Unit,
+    onNavigateToTodoForm: (Int?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TodoListViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
@@ -65,7 +58,7 @@ fun TodoListScreen(
             TodoTopAppBar(title = "Todo", canNavigateBack = false, scrollBehavior = scrollBehavior)
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navigateToAddTodo() }) {
+            FloatingActionButton(onClick = { onNavigateToTodoForm(0) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(id = R.string.add_todo_title),
@@ -78,21 +71,17 @@ fun TodoListScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(
-                    text = "Loading",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge,
-                )
+                Text(text = "Loading...")
             }
         } else {
             TodoListBody(
                 todos = uiState.todos,
-                onItemClick = navigateToTodoUpdate,
+                onItemClick = onNavigateToTodoForm,
                 onCompleted = viewModel::completeTask,
                 modifier =
-                    Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize(),
+                Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
             )
         }
     }
@@ -103,7 +92,7 @@ fun TodoListBody(
     todos: List<Todo>,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    onCompleted: (Int, Boolean) -> Unit = { _, _ -> Unit },
+    onCompleted: (Int, Boolean) -> Unit = { _, _ -> },
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         if (todos.isEmpty()) {
@@ -128,9 +117,9 @@ fun TodoListBody(
                             todo = item,
                             onCompleted = onCompleted,
                             modifier =
-                                Modifier
-                                    .padding(dimensionResource(id = R.dimen.padding_small))
-                                    .clickable { onItemClick(item.id) },
+                            Modifier
+                                .padding(dimensionResource(id = R.dimen.padding_small))
+                                .clickable { onItemClick(item.id) },
                         )
                     }
                 }
@@ -143,7 +132,7 @@ fun TodoListBody(
 fun TodoItem(
     todo: Todo,
     modifier: Modifier = Modifier,
-    onCompleted: (Int, Boolean) -> Unit = { _, _ -> Unit },
+    onCompleted: (Int, Boolean) -> Unit = { _, _ -> },
 ) {
     Card(
         modifier = modifier,
@@ -165,7 +154,7 @@ fun TodoItem(
                     checked = todo.isCompleted,
                     onCheckedChange = { checked ->
                         onCompleted(todo.id, checked)
-                    },
+                    }
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(

@@ -21,8 +21,14 @@ interface TodoDao {
     )
 
     @Query("SELECT * FROM todo WHERE id = :id")
-    fun getById(id: Int): Flow<TodoEntity>
+    suspend fun getById(id: Int): TodoEntity
 
     @Query("SELECT * FROM todo")
-    fun getAll(): Flow<List<TodoEntity>>
+    suspend fun getAll(): List<TodoEntity>
+
+    @Query("SELECT * FROM todo")
+    fun observeAll(): Flow<List<TodoEntity>>
+
+    @Query("SELECT * FROM todo WHERE id = :todoId")
+    fun observeById(todoId: Int): Flow<TodoEntity>
 }

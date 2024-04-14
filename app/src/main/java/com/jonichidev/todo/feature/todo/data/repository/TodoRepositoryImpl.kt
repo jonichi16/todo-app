@@ -37,15 +37,23 @@ class TodoRepositoryImpl
             dao.updateCompleted(id, isCompleted)
         }
 
-        override fun getTodoById(id: Int): Flow<Todo> {
-            return dao.getById(id).map {
-                it.toTodo()
+        override suspend fun getTodoById(id: Int): Todo {
+            return dao.getById(id).toTodo()
+        }
+
+        override suspend fun getTodos(): List<Todo> {
+            return dao.getAll().map { it.toTodo() }
+        }
+
+        override fun getTodosStream(): Flow<List<Todo>> {
+            return dao.observeAll().map {todoEntities ->
+                todoEntities.map {todoEntity ->
+                    todoEntity.toTodo()
+                }
             }
         }
 
-        override fun getTodos(): Flow<List<Todo>> {
-            return dao.getAll().map { todoEntities ->
-                todoEntities.map { todo -> todo.toTodo() }
-            }
+        override fun getTodoStream(id: Int): Flow<Todo> {
+            return dao.observeById(id).map { todoEntity -> todoEntity.toTodo() }
         }
-    }
+}
