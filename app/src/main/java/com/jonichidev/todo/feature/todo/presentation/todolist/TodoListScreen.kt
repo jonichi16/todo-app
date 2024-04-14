@@ -45,7 +45,7 @@ import com.jonichidev.todo.feature.todo.domain.model.Todo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoListScreen(
-    onNavigateToTodoForm: () -> Unit,
+    onNavigateToTodoForm: (Int?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TodoListViewModel = hiltViewModel(),
 ) {
@@ -58,7 +58,7 @@ fun TodoListScreen(
             TodoTopAppBar(title = "Todo", canNavigateBack = false, scrollBehavior = scrollBehavior)
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onNavigateToTodoForm() }) {
+            FloatingActionButton(onClick = { onNavigateToTodoForm(0) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(id = R.string.add_todo_title),
@@ -71,7 +71,7 @@ fun TodoListScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
-                LinearProgressIndicator()
+                Text(text = "Loading...")
             }
         } else {
             TodoListBody(
@@ -90,7 +90,7 @@ fun TodoListScreen(
 @Composable
 fun TodoListBody(
     todos: List<Todo>,
-    onItemClick: () -> Unit,
+    onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     onCompleted: (Int, Boolean) -> Unit = { _, _ -> },
 ) {
@@ -119,7 +119,7 @@ fun TodoListBody(
                             modifier =
                             Modifier
                                 .padding(dimensionResource(id = R.dimen.padding_small))
-                                .clickable { onItemClick() },
+                                .clickable { onItemClick(item.id) },
                         )
                     }
                 }
@@ -154,7 +154,7 @@ fun TodoItem(
                     checked = todo.isCompleted,
                     onCheckedChange = { checked ->
                         onCompleted(todo.id, checked)
-                    },
+                    }
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(

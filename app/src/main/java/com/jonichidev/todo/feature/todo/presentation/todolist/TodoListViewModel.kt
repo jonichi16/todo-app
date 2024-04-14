@@ -1,5 +1,6 @@
 package com.jonichidev.todo.feature.todo.presentation.todolist
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jonichidev.todo.common.util.Result
@@ -23,11 +24,11 @@ data class TodoListState(
 class TodoListViewModel
     @Inject
     constructor(
-        private val repository: TodoRepository,
+        private val repository: TodoRepository
     ) : ViewModel() {
         private val _isLoading = MutableStateFlow(false)
         private val _todos =
-            repository.getTodos()
+            repository.getTodosStream()
                 .map { Result.Success(it) }
         val uiState =
             combine(_todos, _isLoading) { todos, isLoading ->

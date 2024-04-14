@@ -15,7 +15,11 @@ interface TodoRepository {
         isCompleted: Boolean,
     )
 
-    fun getTodoById(id: Int): Flow<Todo>
+    suspend fun getTodoById(id: Int): Todo
 
-    fun getTodos(): Flow<List<Todo>>
+    suspend fun getTodos(): List<Todo>
+
+    fun getTodosStream(): Flow<List<Todo>>
+
+    fun getTodoStream(id: Int): Flow<Todo>
 }
