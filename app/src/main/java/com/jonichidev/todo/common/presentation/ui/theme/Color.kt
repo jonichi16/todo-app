@@ -1,4 +1,4 @@
-package com.jonichidev.todo.ui.theme
+package com.jonichidev.todo.common.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

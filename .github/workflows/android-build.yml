@@ -61,15 +61,15 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew build
-
 
       - name: Run Android Lint
         run: ./gradlew lint
 
       - name: Run ktlint
         run: ./gradlew ktlintFormat
+
+      - name: Build with Gradle
+        run: ./gradlew build
 
       - name: Run local tests
         run: ./gradlew test
@@ -147,9 +147,9 @@ jobs:
             "embeds": [
               {
                 "type": "rich",
-                "title": "PR #${{ github.event.number }} on ${{ github.event.repository.name }} passed code check!",
+                "title": "PR #${{ github.event.number }} on ${{ github.event.repository.name }} hit a snag!",
                 "description": "#${{ github.event.number }}: ${{ github.event.pull_request.title }}\n\n${{ github.event.repository.name }}: ${{ github.event.pull_request.head.ref }} → ${{ github.event.pull_request.base.ref }}",
-                "color": 16737843,
+                "color": 13369344,
                 "author": {
                   "name": "${{ github.event.pull_request.user.login }}",
                   "url": "${{ github.event.pull_request.user.html_url }}",
@@ -164,7 +164,7 @@ jobs:
                   },
                   {
                     "name": "Status",
-                    "value": "SUCCESS",
+                    "value": "FAILURE",
                     "inline": "true"
                   },
                   {
